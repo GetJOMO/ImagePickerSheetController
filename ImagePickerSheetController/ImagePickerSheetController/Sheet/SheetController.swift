@@ -12,6 +12,8 @@ let sheetInset: CGFloat = 10
 
 class SheetController: NSObject {
     
+    var displayPreview: Bool = true;
+    
     fileprivate(set) lazy var sheetCollectionView: UICollectionView = {
         let layout = SheetCollectionViewLayout()
         let collectionView = UICollectionView(frame: CGRect(), collectionViewLayout: layout)
@@ -27,6 +29,8 @@ class SheetController: NSObject {
     }()
     
     var previewCollectionView: PreviewCollectionView
+    var labelBaseFontName: String = "HelveticaNeue" // allow passing base name like "GothamSSm" which will then be converted to "GothamSSm-Bold", etc as needed
+    var labelFontColor: UIColor = .blue
     
     fileprivate(set) var actions = [ImagePickerAction]()
     
@@ -44,7 +48,6 @@ class SheetController: NSObject {
     
     init(previewCollectionView: PreviewCollectionView) {
         self.previewCollectionView = previewCollectionView
-        
         super.init()
     }
     
@@ -120,6 +123,30 @@ class SheetController: NSObject {
     }
     
     fileprivate func fontForAction(_ action: ImagePickerAction) -> UIFont {
+        
+        if action.style == .cancel {
+            if let font = UIFont(name: "\(labelBaseFontName)-Medium", size: 21) {
+                return font
+            }
+            
+            if let font = UIFont(name: "\(labelBaseFontName)-Bold", size: 21) {
+                return font
+            }
+        }
+        
+        if let font = UIFont(name: "\(labelBaseFontName)-Book", size: 21) {
+            return font
+        }
+        
+        if let font = UIFont(name: "\(labelBaseFontName)-Light", size: 21) {
+            return font
+        }
+        
+        if let font = UIFont(name: "\(labelBaseFontName)-Regular", size: 21) {
+            return font
+        }
+        
+        // fallbacks
         if action.style == .cancel {
             return UIFont.boldSystemFont(ofSize: 21)
         }
@@ -161,7 +188,7 @@ class SheetController: NSObject {
         let cancelAction = actions.filter { $0.style == .cancel }
                                   .first
         
-        if let cancelAction = cancelAction {
+        if let cancelAction = (actions.filter { $0.style == ImagePickerActionStyle.cancel }).first {
             handleAction(cancelAction)
         }
         else {
@@ -202,7 +229,9 @@ extension SheetController: UICollectionViewDataSource {
         else {
             let action = actions[indexPath.item]
             let actionCell = collectionView.dequeueReusableCell(withReuseIdentifier: NSStringFromClass(SheetActionCollectionViewCell.self), for: indexPath) as! SheetActionCollectionViewCell
+            
             actionCell.textLabel.font = fontForAction(action)
+            actionCell.textLabel.textColor = labelFontColor
             actionCell.textLabel.text = numberOfSelectedAssets > 0 ? action.secondaryTitle(numberOfSelectedAssets) : action.title
             
             cell = actionCell
