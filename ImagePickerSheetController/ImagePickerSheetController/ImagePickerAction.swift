@@ -8,12 +8,12 @@
 
 import Foundation
 
-public enum ImagePickerActionStyle {
+public enum ImagePickerActionStyle: Int {
     case `default`
     case cancel
 }
 
-open class ImagePickerAction {
+open class ImagePickerAction: NSObject {
     
     public typealias Title = (Int) -> String
     public typealias Handler = (ImagePickerAction) -> ()

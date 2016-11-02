@@ -12,6 +12,8 @@ let sheetInset: CGFloat = 10
 
 class SheetController: NSObject {
     
+    var displayPreview: Bool = true;
+    
     fileprivate(set) lazy var sheetCollectionView: UICollectionView = {
         let layout = SheetCollectionViewLayout()
         let collectionView = UICollectionView(frame: CGRect(), collectionViewLayout: layout)
@@ -161,7 +163,7 @@ class SheetController: NSObject {
         let cancelAction = actions.filter { $0.style == .cancel }
                                   .first
         
-        if let cancelAction = cancelAction {
+        if let cancelAction = (actions.filter { $0.style == ImagePickerActionStyle.cancel }).first {
             handleAction(cancelAction)
         }
         else {
