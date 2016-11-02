@@ -40,9 +40,9 @@ open class ImagePickerSheetController: UIViewController {
             sheetController.labelBaseFontName = baseFontName
         }
     }
-    open var fontColor: UIColor = .blue {
+    open var tintColor: UIColor = .blue {
         didSet {
-            sheetController.labelFontColor = fontColor
+            sheetController.labelFontColor = tintColor
         }
     }
     
@@ -456,7 +456,7 @@ extension ImagePickerSheetController: UICollectionViewDataSource {
         
         supplementaryViews[indexPath.section] = view
         view.selected = selectedAssets.contains(asset)
-        
+        view.tintColor = tintColor
         return view
     }
 }
