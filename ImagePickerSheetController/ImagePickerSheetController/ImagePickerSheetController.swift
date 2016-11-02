@@ -35,6 +35,17 @@ public enum ImagePickerMediaType: Int {
 @available(iOS 9.0, *)
 open class ImagePickerSheetController: UIViewController {
     
+    open var baseFontName: String = "HelveticaNeue" {
+        didSet {
+            sheetController.labelBaseFontName = baseFontName
+        }
+    }
+    open var fontColor: UIColor = .blue {
+        didSet {
+            sheetController.labelFontColor = fontColor
+        }
+    }
+    
     fileprivate lazy var sheetController: SheetController = {
         let controller = SheetController(previewCollectionView: self.previewCollectionView)
         controller.displayPreview = self.mediaType != .none;
@@ -399,7 +410,6 @@ open class ImagePickerSheetController: UIViewController {
             completion?()
         })
     }
-    
 }
 
 // MARK: - UICollectionViewDataSource
@@ -449,7 +459,6 @@ extension ImagePickerSheetController: UICollectionViewDataSource {
         
         return view
     }
-    
 }
 
 // MARK: - UICollectionViewDelegate
